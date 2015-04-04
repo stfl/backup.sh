@@ -1,7 +1,9 @@
 #!/bin/bash
 
-if [ "$(id -u)" = "0" ]; then
-   echo "This script must not be run as root" 1>&2
+[ $1 == "-h" ] && echo "Usage: $0 destination [addtional flags]"
+
+if [ "$(id -un)" != "stefan" ]; then
+   echo "This script can (currently) only run by user 'stefan'" 1>&2
    exit 1
 fi
 
@@ -12,11 +14,11 @@ elif [ $# -gt 2 ]; then
     echo "Too many arguments. Usage: $0 destination [addtional flags]" >&2
     exit 1
 elif [ ! -d "$1" ]; then
-   echo "Invalid path: $1" >&2
-   exit 1
-elif [ ! -w "$1" ]; then
-   echo "Directory not writable: $1" >&2
-   exit 1
+   mkdir -p "$1"
+   if [ $? != "0" ]; then
+      echo "Invalid path: $1" >&2
+      exit 1
+   fi
 fi
 
 case "$1" in

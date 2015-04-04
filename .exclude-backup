@@ -1,0 +1,17 @@
+.cache/
+.thumbnails/
+lost+found/
+.local/share/Trash/
+.config/google-chrome/Default/
+.ACEStream/.acestream_cache
+*~
+Downloads/
+Dropbox/
+Grive/
+ownCloud/
+Pictures/
+Music/
+.config/Clementine/
+Videos/
+VirtualBox VMs/
+VM/

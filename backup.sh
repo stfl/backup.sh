@@ -1,5 +1,12 @@
 #!/bin/bash
 
+[ "$1" == "-h" ] && echo "Usage: $0 destination [addtional flags]" && exit 0
+
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
 if [ $# -lt 1 ]; then
     echo "No destination defined. Usage: $0 destination [addtional flags]" >&2
     exit 1
@@ -7,11 +14,11 @@ elif [ $# -gt 2 ]; then
     echo "Too many arguments. Usage: $0 destination [addtional flags]" >&2
     exit 1
 elif [ ! -d "$1" ]; then
-   echo "Invalid path: $1" >&2
-   exit 1
-elif [ ! -w "$1" ]; then
-   echo "Directory not writable: $1" >&2
-   exit 1
+   mkdir -p "$1"
+   if [ $? != "0" ]; then
+      echo "Invalid path: $1" >&2
+      exit 1
+   fi
 fi
 
 case "$1" in
@@ -27,7 +34,7 @@ case "$1" in
 esac
 
 if [ ! -z "$2" ]; then
-# f.e. --quiet -q
+   # f.e. --quiet -q
    addition_flags="$2"
 fi
 

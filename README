@@ -1,0 +1,7 @@
+
+# backup scripts to backup rootfs (backup.sh) and home (backup_home.sh)
+# backup.sh must be run as root
+# backup_home.sh only works as "stefan" currently
+
+# run install.sh !
+

@@ -39,7 +39,7 @@ if [ ! -z "$2" ]; then
 fi
 
 START=$(date +%s)
-rsync -aAXhH --info=progress2 --delete $addition_flags --exclude={"/home/*","/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / "$1"
+rsync -aAXhH --info=progress2 --delete $addition_flags --exclude={"/home/*","/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","swapfile*"} / "$1"
 FINISH=$(date +%s)
 
 echo "$(date '+%Y-%m-%d, %T, %A')" > $1/backup_from 

@@ -1,3 +1,4 @@
+# cache and co
 .cache/
 .thumbnails/
 lost+found/
@@ -5,6 +6,9 @@ lost+found/
 .config/google-chrome/Default/
 .ACEStream/.acestream_cache
 *~
+.TelegramDesktop/
+
+# data I don't want to backup with this
 Downloads/
 Dropbox/
 Grive/

@@ -20,7 +20,7 @@ fi
 
 SRC="$HOME/"
 
-# ADDITION_FLAGS="-S"
+# ADD_FLAGS="-S"
 
 while [[ $# > 0 ]]
 do
@@ -55,7 +55,7 @@ case $key in
        shift
     ;;
     -a|--add)
-       ADDITION_FLAGS="$ADDITION_FLAGS $2"
+       ADD_FLAGS="$ADD_FLAGS $2"
        shift
     ;;
     -e|--exclude)
@@ -68,8 +68,8 @@ case $key in
        shift
     ;;
     *)
-       echo "unknown argument $key"
-       usage
+       echo "unknown argument $key. pass it on to rsync"
+       ADD_FLAGS="$ADD_FLAGS $key"
     ;;
 esac
 shift
@@ -118,7 +118,7 @@ if [ ! $RESTORE ]; then
 fi
 
 START=$(date +%s)
-rsync -aAXhHS --info=progress2 --delete $ADDITION_FLAGS \
+rsync -aAXhHS --info=progress2 --delete $ADD_FLAGS \
       --exclude-from $EXCLUDE_FILE \
       $SRC $DEST
 FINISH=$(date +%s)

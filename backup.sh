@@ -49,7 +49,7 @@ case $key in
        shift
     ;;
     -a|--add)
-       ADDITION_FLAGS="$ADDITION_FLAGS $2"
+       ADD_FLAGS="$ADD_FLAGS $2"
        shift
     ;;
     # -e|--exclude)
@@ -61,8 +61,8 @@ case $key in
        # shift
     # ;;
     *)
-       echo "unknown argument $key add it to \$ADDITION_FLAGS"
-       ADDITION_FLAGS="$ADDITION_FLAGS $key"
+       echo "unknown argument $key. pass it on to rsync"
+       ADD_FLAGS="$ADD_FLAGS $key"
     ;;
 esac
 shift
@@ -105,7 +105,7 @@ if [ ! $RESTORE ]; then
 fi
 
 START=$(date +%s)
-rsync -aAXhH --info=progress2 --delete $ADDITION_FLAGS \
+rsync -aAXhH --info=progress2 --delete $ADD_FLAGS \
       $SRC $DEST
 FINISH=$(date +%s)
 

@@ -5,7 +5,7 @@ usage(){
    echo "-h | --help"
    echo "-s | --src        Source directory which will be backed up (use without trailing /)"
    echo "-d | --dest       Destination dir where the backup will be stored"
-   echo "-r | --restore    Restore the backupt -s <backup location> -d <restore dest>"
+   echo "-r | --restore    Restore the backup -s <backup location> -d <restore dest>"
    echo "-c | --cycle      Update the tail of cycling backups. Not recomendet for snapshots"
    echo "                  [not yet implemented]"
    echo "-a | --add        Addition flags passed to rsync like \"-q --dry-run --delete-excluded...\""
@@ -39,7 +39,7 @@ case $key in
        fi
        shift
     ;;
-    -d|--dst)
+    -d|--dest)
        DEST="$2"
        shift
     ;;
@@ -52,7 +52,7 @@ case $key in
        shift
     ;;
     -a|--add)
-       ADDITION_FLAGS=$2
+       ADDITION_FLAGS="$ADDITION_FLAGS $2"
        shift
     ;;
     *)

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage(){
-   echo "Usage: $0 [options]"
+   echo "Usage: $0 -s <src> -d <dest> [-rcaeh]"
    echo "-h | --help"
    echo "-s | --src        Source directory which will be backed up (use without trailing /)"
    echo "-d | --dest       Destination dir where the backup will be stored"
@@ -9,18 +9,9 @@ usage(){
    echo "-c | --cycle      Update the tail of cycling backups. Not recomendet for snapshots"
    echo "                  [not yet implemented]"
    echo "-a | --add        Addition flags passed to rsync like \"-q --dry-run --delete-excluded...\""
-   echo "-e | --exclude    Exclude file"
+   # echo "-e | --exclude    Exclude file"
    exit 1
 }
-
-if [ "$(id -u)" == "0" ]; then
-   echo "do not run as root!" >&2
-   exit 1
-fi
-
-SRC="$HOME/"
-
-# ADDITION_FLAGS="-S"
 
 while [[ $# > 0 ]]
 do
@@ -32,13 +23,16 @@ case $key in
     ;;
     -s|--src)
        SRC="$2"
-       src_set=true
-       if [ "/" != "${SRC: -1}" ]; then
-          read -rsp $"no trailing / in SRC. add now? (Y/n): " -n1 inp
-          if [ "$inp" != "n" ]; then
-             SRC="$SRC/"
+       if [ "1" == "$(wc -w <<< $SRC)" ]; then
+          if [ "/" != "${SRC: -1}" ]; then
+             read -rsp $"no trailing / in SRC. add now? (Y/n): " -n1 inp
+             if [ "$inp" != "n" ]; then
+                SRC="$SRC/"
+             fi
+             echo ""
           fi
-          echo ""
+       else
+          echo "multiple sources detected"
        fi
        shift
     ;;
@@ -58,30 +52,23 @@ case $key in
        ADDITION_FLAGS="$ADDITION_FLAGS $2"
        shift
     ;;
-    -e|--exclude)
-       EXCLUDE_FILE=$2
-       exclude_set=true
-       if [ ! -e $EXCLUDE_FILE ]; then
-          echo "Exclude file can't be found" >&2
-          exit 1
-       fi
-       shift
-    ;;
+    # -e|--exclude)
+       # EXCLUDE_FILE=$2
+       # if [ ! -e $EXCLUDE_FILE ]; then
+          # echo "Exclude file can't be found" >&2
+          # exit 1
+       # fi
+       # shift
+    # ;;
     *)
-       echo "unknown argument $key"
-       usage
+       echo "unknown argument $key add it to \$ADDITION_FLAGS"
+       ADDITION_FLAGS="$ADDITION_FLAGS $key"
     ;;
 esac
 shift
 done
 
-if [ ! $exclude_set ] && [ -e "$SRC/.exclude-backup" ]; then
-   echo "found $SRC/.exclude-backup... using it"
-   EXCLUDE_FILE="$SRC/.exclude-backup"
-fi
-
-if [ $RESTORE ] && ([ ! $src_set ] || [ -z ${DEST+x} ]); then
-   echo "restore mode requires -s and -d" >&2
+if [ -z ${SRC+x} ] || [ -z ${DEST+x} ]; then
    usage
 fi
 
@@ -118,8 +105,7 @@ if [ ! $RESTORE ]; then
 fi
 
 START=$(date +%s)
-rsync -aAXhHS --info=progress2 --delete $ADDITION_FLAGS \
-      --exclude-from $EXCLUDE_FILE \
+rsync -aAXhH --info=progress2 --delete $ADDITION_FLAGS \
       $SRC $DEST
 FINISH=$(date +%s)
 

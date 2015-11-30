@@ -112,9 +112,9 @@ if [ ! $RESTORE ]; then
 fi
 
 START=$(date +%s)
-echo "rsync -aAXhHS --info=progress2 --delete $ADDITION_FLAGS \
+rsync -aAXhHS --info=progress2 --delete $ADDITION_FLAGS \
       --exclude-from $EXCLUDE_FILE \
-      $SRC $DEST"
+      $SRC $DEST
 FINISH=$(date +%s)
 
 if [ ! $RESTORE ]; then

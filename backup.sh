@@ -30,6 +30,13 @@ case $key in
     -s|--src)
        SRC="$2"
        src_set=true
+       if [ "/" != "${SRC: -1}" ]; then
+          read -rsp $"no trailing / in SRC. add now? (Y/n): " -n1 inp
+          if [ "$inp" != "n" ]; then
+             SRC="$SRC/"
+          fi
+          echo ""
+       fi
        shift
     ;;
     -d|--dst)
@@ -76,6 +83,7 @@ elif [ $RESTORE ] && [ ! -e $SRC/backup_from ]; then
    if [ "y" != "$cont" ]; then
       exit
    fi
+   echo ""
 fi
 
 if [ ! $RESTORE ]; then
@@ -102,7 +110,7 @@ if [ ! $RESTORE ]; then
    touch $DEST # update mtime
    echo "$(date '+%Y-%m-%d, %T, %A')" > $DEST/backup_from
    echo "total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds" >> $DEST/backup_from
-else 
+else
    rm $DEST/backup_from -f
    # removing the backup_from when restoring
 fi

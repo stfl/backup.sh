@@ -118,7 +118,7 @@ if [ ! $RESTORE ]; then
 fi
 
 START=$(date +%s)
-rsync -aAXhHS --info=progress2 --delete $ADD_FLAGS \
+rsync -aAXhHS --numeric-ids --info=progress2 --delete $ADD_FLAGS \
       --exclude-from $EXCLUDE_FILE \
       $SRC $DEST
 FINISH=$(date +%s)
@@ -126,7 +126,8 @@ FINISH=$(date +%s)
 if [ ! $RESTORE ]; then
    touch $DEST # update mtime
    echo "$(date '+%Y-%m-%d, %T, %A')" > $DEST/backup_from
-   echo "total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds" >> $DEST/backup_from
+   echo "total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds" \
+      >> $DEST/backup_from
 else
    rm $DEST/backup_from -f
    # removing the backup_from when restoring

@@ -1,4 +1,4 @@
-# cache and co
+# Cache and temporary fils
 .cache/
 .thumbnails/
 lost+found/
@@ -6,6 +6,7 @@ lost+found/
 .config/google-chrome/Default/
 .ACEStream/.acestream_cache
 *~
+*.swp
 .TelegramDesktop/
 
 # data I don't want to backup with this
@@ -13,6 +14,7 @@ Downloads/
 Dropbox/
 Grive/
 Mega/
+MEGA/
 ownCloud/
 Pictures/
 Music/

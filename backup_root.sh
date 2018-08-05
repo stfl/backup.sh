@@ -101,7 +101,7 @@ if [ ! $RESTORE ]; then
 fi
 
 START=$(date +%s)
-rsync -aAXhHS --numeric-ids --info=progress2 --delete $ADD_FLAGS \
+rsync -aAXhH --numeric-ids --info=progress2 --delete $ADD_FLAGS \
       --exclude={"/home/*","/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","swapfile*"} \
       $SRC $DEST
 FINISH=$(date +%s)
